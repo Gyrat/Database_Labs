@@ -21,6 +21,17 @@ ALTER TABLE dbo.PersonPhone
 	ADD CONSTRAINT Def_PostalCode DEFAULT '0' FOR PostalCode;
 
 -- e) Fill new table with data from Person.PersonPhone but with contacts with type 'Cell' from table PhoneNumberType
+INSERT INTO dbo.PersonPhone(
+	 BusinessEntityID,
+	 PhoneNumber,
+	 PhoneNumberTypeID,
+	 ModifiedDate
+)
+SELECT PersonPhone.BusinessEntityID, PersonPhone.PhoneNumber, PersonPhone.PhoneNumberTypeID, PersonPhone.ModifiedDate
+FROM Person.PersonPhone 
+INNER JOIN Person.PhoneNumberType as PhoneNumberType
+	ON PhoneNumberType.PhoneNumberTypeID = Person.PersonPhone.PhoneNumberTypeID
+		WHERE PhoneNumberType.Name = 'Cell';
 
 -- f) change type of field PhoneNumberID to BIGINT and possible to be null
 ALTER TABLE dbo.PersonPhone
